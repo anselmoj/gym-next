@@ -1,9 +1,10 @@
 import { FormDataProps } from '@/app/atletas/form'
+import { OptionTypeBase } from '@/components/Input/Select'
 
 interface HttpResponseRequest {
   name: string
   gender: string
-  is_active: boolean
+  is_active: OptionTypeBase<boolean>
 }
 
 interface IProps {
@@ -17,7 +18,7 @@ export default async function createAthlete({ onSuccess, form }: IProps) {
     gender: form.gender,
     is_active: form.is_active,
   }
-  const res = await fetch('', {
+  const res = await fetch('http://localhost:3334/gym-students', {
     headers: {
       'Content-Type': 'application/json',
     },

@@ -8,7 +8,10 @@ import {
   useImperativeHandle,
   useRef,
 } from 'react'
-import InputSelect, { InputSelectRefProps } from '@/components/Input/Select'
+
+import InputCheckbox, {
+  InputCheckboxRefProps,
+} from '@/components/Input/Checkbox'
 
 export interface FormDataProps {
   name: string
@@ -48,7 +51,7 @@ const AthleteForm: React.ForwardRefRenderFunction<FormRefProps, Props> = (
 ) => {
   const inputNameRef = useRef<InputBaseRefProps>(null)
   const inputGenderRef = useRef<InputBaseRefProps>(null)
-  const inputIsActiveRef = useRef<InputSelectRefProps>(null)
+  const inputIsActiveRef = useRef<InputCheckboxRefProps>(null)
   const router = useRouter()
 
   function handleGoBack() {
@@ -69,7 +72,7 @@ const AthleteForm: React.ForwardRefRenderFunction<FormRefProps, Props> = (
     return {
       name: inputNameRef.current.getValue(),
       gender: inputGenderRef.current.getValue(),
-      is_active: Boolean(inputIsActiveRef.current.getValue()),
+      is_active: inputIsActiveRef.current.getValue(),
     }
   }
 
@@ -87,7 +90,6 @@ const AthleteForm: React.ForwardRefRenderFunction<FormRefProps, Props> = (
     }
     inputNameRef.current.setError(errors.name || '')
     inputGenderRef.current.setError(errors.gender || '')
-    inputIsActiveRef.current.setError(errors.is_active || '')
   }
 
   function clearFormDataValues(): void {
@@ -152,7 +154,7 @@ const AthleteForm: React.ForwardRefRenderFunction<FormRefProps, Props> = (
       }
       inputNameRef.current.setValue(initialData.name)
       inputGenderRef.current.setValue(initialData.gender)
-      inputIsActiveRef.current.setValue(initialData.is_active ? [] : [])
+      inputIsActiveRef.current.setValue(initialData.is_active)
     }
   }, [initialData])
 
@@ -164,7 +166,7 @@ const AthleteForm: React.ForwardRefRenderFunction<FormRefProps, Props> = (
           <InputBase label="Gênero" ref={inputGenderRef} />
         </div>
         <div className="mt-2">
-          <InputSelect options={[]} label="Situação" ref={inputIsActiveRef} />
+          <InputCheckbox label="Ativo" ref={inputIsActiveRef} />
         </div>
       </div>
 

@@ -1,10 +1,12 @@
 import { AthleteList } from '@/app/atletas/page'
 
 interface HttpResponse {
-  gender: string
-  is_active: boolean
-  name: string
-  id: number
+  list: {
+    gender: string
+    is_active: boolean
+    name: string
+    id: number
+  }[]
 }
 
 interface IProps {
@@ -21,8 +23,9 @@ export default async function loadAthleteList({ onSuccess }: IProps) {
   if (!res.ok) {
     throw new Error('Erro ao carregar a listagem de atletas')
   }
-  const data: HttpResponse[] = await res.json()
-  const dataParsed: AthleteList[] = data.map((item) => ({
+  const data: HttpResponse = await res.json()
+  console.log('data', data)
+  const dataParsed: AthleteList[] = data.list.map((item) => ({
     gender: item.gender,
     id: item.id,
     is_active: item.is_active,

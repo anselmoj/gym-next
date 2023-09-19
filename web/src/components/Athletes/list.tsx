@@ -1,13 +1,21 @@
 import { AthleteList } from '@/app/atletas/page'
-import { Eye, PencilLine, Trash } from '@phosphor-icons/react'
+import { Check, PencilLine, X } from '@phosphor-icons/react'
 import Link from 'next/link'
+import ComponentIsVisible from '../utils/IsVisible'
 
 interface Props {
   athlete: AthleteList
   addColorRow: boolean
+  openEnable(data: AthleteList): void
+  openDisable(data: AthleteList): void
 }
 
-export default function List({ athlete, addColorRow }: Props) {
+export default function List({
+  athlete,
+  addColorRow,
+  openEnable,
+  openDisable,
+}: Props) {
   const bgColor = addColorRow ? 'bg-transparent' : 'bg-gray-300'
 
   return (
@@ -17,15 +25,33 @@ export default function List({ athlete, addColorRow }: Props) {
       <p>{athlete.id}</p>
       <p>{athlete.name}</p>
       <p>{athlete.gender}</p>
-      <p>{athlete.is_active}</p>
+      <ComponentIsVisible when={athlete.is_active === true}>
+        <p>Ativo</p>
+      </ComponentIsVisible>
+      <ComponentIsVisible when={athlete.is_active === false}>
+        <p>Inativo</p>
+      </ComponentIsVisible>
+
       <div className="flex items-center gap-2 cursor-pointer">
-        <Link
-          title="Visualizar"
-          className="text-blue-700"
-          href={`/atletas/${athlete.id}`}
-        >
-          <Eye size={22} />
-        </Link>
+        <ComponentIsVisible when={athlete.is_active === false}>
+          <div
+            onClick={() => openEnable(athlete)}
+            title="Ativar"
+            className="text-green-600"
+          >
+            <Check size={22} />
+          </div>
+        </ComponentIsVisible>
+
+        <ComponentIsVisible when={athlete.is_active === true}>
+          <div
+            onClick={() => openDisable(athlete)}
+            title="Desativar"
+            className="text-red-600"
+          >
+            <X size={22} />
+          </div>
+        </ComponentIsVisible>
 
         <Link
           title="Editar"
@@ -34,9 +60,6 @@ export default function List({ athlete, addColorRow }: Props) {
         >
           <PencilLine size={22} />
         </Link>
-        <button title="Remover">
-          <Trash className="text-red-500" size={22} />
-        </button>
       </div>
     </div>
   )

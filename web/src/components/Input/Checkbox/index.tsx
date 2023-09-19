@@ -5,7 +5,7 @@ import {
   useRef,
 } from 'react'
 
-interface InputCheckboxRefProps {
+export interface InputCheckboxRefProps {
   getValue(): boolean
   setValue(value: boolean): void
 }

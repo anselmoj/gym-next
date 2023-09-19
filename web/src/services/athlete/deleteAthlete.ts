@@ -1,10 +1,10 @@
 interface IProps {
-  id: string
+  id: number
   onSuccess(): void
 }
 
-export default async function getAthlete({ id, onSuccess }: IProps) {
-  const res = await fetch(`/${id}`, {
+export default async function deleteAthlete({ id, onSuccess }: IProps) {
+  const res = await fetch(`http://localhost:3334/gym-students/${id}`, {
     headers: {
       'Content-Type': 'application/json',
     },

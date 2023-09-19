@@ -1,9 +1,7 @@
 import { FormDataProps } from '@/app/atletas/form'
-
 interface HttpResponseRequest {
   name: string
   gender: string
-  is_active: boolean
 }
 
 interface IProps {
@@ -16,9 +14,8 @@ export default async function editAthlete({ onSuccess, form, id }: IProps) {
   const body: HttpResponseRequest = {
     name: form.name,
     gender: form.gender,
-    is_active: form.is_active,
   }
-  const res = await fetch(`/${id}`, {
+  const res = await fetch(`http://localhost:3334/gym-students/${id}`, {
     headers: {
       'Content-Type': 'application/json',
     },

@@ -11,7 +11,7 @@ interface IProps {
 export default async function getAthlete({
   id,
 }: IProps): Promise<HttpResponse> {
-  const res = await fetch(`/${id}`, {
+  const res = await fetch(`http://localhost:3334/gym-students/${id}`, {
     headers: {
       'Content-Type': 'application/json',
     },
