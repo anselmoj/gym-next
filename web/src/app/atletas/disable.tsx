@@ -10,7 +10,6 @@ import {
 import ComponentModalAlert, {
   IRefProps as ComponentModalBaseRefProps,
 } from '../../components/modal/Alert'
-import { useRouter } from 'next/navigation'
 import disableAthlete from '@/services/athlete/disableAthlete'
 import { AthleteList } from './page'
 
@@ -19,10 +18,14 @@ export interface IAthleteDisableRefProps {
   open(data: AthleteList): void
 }
 
-const AthleteDisable: ForwardRefRenderFunction<IAthleteDisableRefProps> = (
-  _,
-  ref,
-) => {
+interface IAthleteDisableProps {
+  reloadList(): void
+}
+
+const AthleteDisable: ForwardRefRenderFunction<
+  IAthleteDisableRefProps,
+  IAthleteDisableProps
+> = ({ reloadList }, ref) => {
   const componentModalBaseRef = useRef<ComponentModalBaseRefProps>(null)
   const [hideModal, setHideModal] = useState<boolean>(false)
   const [disableValues, setDisableValues] = useState<AthleteList>(
@@ -33,40 +36,40 @@ const AthleteDisable: ForwardRefRenderFunction<IAthleteDisableRefProps> = (
     setDisableValues(data)
     componentModalBaseRef.current?.open()
   }, [])
-  const router = useRouter()
 
   const closeModal = useCallback(() => {
     setHideModal(true)
     componentModalBaseRef.current?.close()
   }, [])
 
+  async function handleDisableAthlete() {
+    try {
+      await disableAthlete({
+        onSuccess: () => reloadList(),
+        id: disableValues.id,
+      })
+      closeModal()
+    } catch (error) {
+      throw new Error('Erro ao inativar atleta')
+    }
+  }
+
   useImperativeHandle(ref, () => ({
     open: openModal,
     close: closeModal,
   }))
-
-  async function handleDisableAthlete() {
-    try {
-      await disableAthlete({
-        onSuccess: () => router.refresh(),
-        id: disableValues.id,
-      })
-    } catch (error) {
-      throw new Error('Erro ao desabilitar atleta')
-    }
-  }
 
   return (
     <>
       <ComponentModalAlert
         buttonColor="bg-red-500"
         onClick={handleDisableAthlete}
-        buttonText="Desativar"
+        buttonText="Inativar"
         iconType="WARNING"
-        message="Deseja desabilitar esse atleta?
+        message="Deseja inativar esse atleta?
   "
         ref={componentModalBaseRef}
-        title="Desabilitar atleta"
+        title="Inativar atleta"
       >
         <div className={`${hideModal ? 'hideModal' : ''}`} />
       </ComponentModalAlert>

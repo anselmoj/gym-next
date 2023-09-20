@@ -24,7 +24,6 @@ export default async function loadAthleteList({ onSuccess }: IProps) {
     throw new Error('Erro ao carregar a listagem de atletas')
   }
   const data: HttpResponse = await res.json()
-  console.log('data', data)
   const dataParsed: AthleteList[] = data.list.map((item) => ({
     gender: item.gender,
     id: item.id,

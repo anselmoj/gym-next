@@ -3,10 +3,12 @@ import {
   forwardRef,
   useImperativeHandle,
   useRef,
+  useState,
 } from 'react'
 
 export interface InputCheckboxRefProps {
   getValue(): boolean
+  setError(error: string): void
   setValue(value: boolean): void
 }
 
@@ -19,10 +21,14 @@ const InputCheckboxWithRef: React.ForwardRefRenderFunction<
   InputCheckboxProps
 > = ({ label, ...rest }, ref) => {
   const inputRef = useRef<HTMLInputElement>(null)
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   useImperativeHandle(ref, () => ({
     getValue: (): boolean => {
       return inputRef.current?.checked || false
+    },
+    setError: (error: string): void => {
+      setErrorMessage(error)
     },
     setValue: (value: boolean): void => {
       if (inputRef.current) {
@@ -33,13 +39,11 @@ const InputCheckboxWithRef: React.ForwardRefRenderFunction<
 
   return (
     <div className="flex items-center flex-row gap-2">
-      <input
-        {...rest}
-        type="checkbox"
-        ref={inputRef}
-        // className="appearance-none h-[1.2rem] w-[1.2rem] border-[1px] rounded border-solid border-slate-400 checked:bg-zinc-700"
-      />
+      <input {...rest} type="checkbox" ref={inputRef} />
       {label && <label className="text-gray-700">{label}</label>}
+      <div>
+        {!!errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      </div>
     </div>
   )
 }

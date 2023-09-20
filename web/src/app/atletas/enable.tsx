@@ -11,7 +11,6 @@ import ComponentModalAlert, {
   IRefProps as ComponentModalBaseRefProps,
 } from '../../components/modal/Alert'
 import enableAthlete from '@/services/athlete/enableAthlete'
-import { useRouter } from 'next/navigation'
 import { AthleteList } from './page'
 
 export interface IAthleteEnableRefProps {
@@ -19,10 +18,14 @@ export interface IAthleteEnableRefProps {
   open(data: AthleteList): void
 }
 
-const AthleteEnable: ForwardRefRenderFunction<IAthleteEnableRefProps> = (
-  _,
-  ref,
-) => {
+interface IAthleteEnableProps {
+  reloadList(): void
+}
+
+const AthleteEnable: ForwardRefRenderFunction<
+  IAthleteEnableRefProps,
+  IAthleteEnableProps
+> = ({ reloadList }, ref) => {
   const componentModalBaseRef = useRef<ComponentModalBaseRefProps>(null)
   const [hideModal, setHideModal] = useState<boolean>(false)
   const [enableValues, setEnableValues] = useState<AthleteList>(
@@ -33,7 +36,6 @@ const AthleteEnable: ForwardRefRenderFunction<IAthleteEnableRefProps> = (
     setEnableValues(data)
     componentModalBaseRef.current?.open()
   }, [])
-  const router = useRouter()
 
   const closeModal = useCallback(() => {
     setHideModal(true)
@@ -49,10 +51,11 @@ const AthleteEnable: ForwardRefRenderFunction<IAthleteEnableRefProps> = (
     try {
       await enableAthlete({
         id: enableValues.id,
-        onSuccess: () => router.refresh(),
+        onSuccess: () => reloadList(),
       })
+      closeModal()
     } catch (error) {
-      throw new Error('Erro ao habilitar atleta')
+      throw new Error('Erro ao ativar atleta')
     }
   }
 

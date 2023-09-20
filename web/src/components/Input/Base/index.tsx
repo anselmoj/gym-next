@@ -40,7 +40,7 @@ const InputBaseWithRef: React.ForwardRefRenderFunction<
   },
   ref,
 ) => {
-  const [errorMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
   const [inputType, setInputType] = useState<string>(type)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -70,7 +70,7 @@ const InputBaseWithRef: React.ForwardRefRenderFunction<
         return inputRef.current?.value || ''
       },
       setError: (error: string): void => {
-        throw new Error(error)
+        setErrorMessage(error)
       },
       setValue: (value: string): void => {
         if (inputRef.current) {

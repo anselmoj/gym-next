@@ -75,8 +75,14 @@ export default function Athlete() {
             ))}
           </div>
         </div>
-        <AthleteEnable ref={athleteEnableRef} />
-        <AthleteDisable ref={athleteDisableRef} />
+        <AthleteEnable
+          reloadList={handleLoadAthleteList}
+          ref={athleteEnableRef}
+        />
+        <AthleteDisable
+          reloadList={handleLoadAthleteList}
+          ref={athleteDisableRef}
+        />
       </div>
     </>
   )

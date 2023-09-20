@@ -3,6 +3,11 @@ import { Check, PencilLine, X } from '@phosphor-icons/react'
 import Link from 'next/link'
 import ComponentIsVisible from '../utils/IsVisible'
 
+enum IGender {
+  'Masculino' = 'M',
+  'Feminino' = 'F',
+}
+
 interface Props {
   athlete: AthleteList
   addColorRow: boolean
@@ -24,7 +29,12 @@ export default function List({
     >
       <p>{athlete.id}</p>
       <p>{athlete.name}</p>
-      <p>{athlete.gender}</p>
+      <ComponentIsVisible when={athlete.gender === IGender.Masculino}>
+        <p>Masculino</p>
+      </ComponentIsVisible>
+      <ComponentIsVisible when={athlete.gender === IGender.Feminino}>
+        <p>Feminino</p>
+      </ComponentIsVisible>
       <ComponentIsVisible when={athlete.is_active === true}>
         <p>Ativo</p>
       </ComponentIsVisible>

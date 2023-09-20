@@ -11,7 +11,7 @@ import {
 
 import { Dialog, Transition } from '@headlessui/react'
 
-interface IRefProps {
+export interface IComponentModalDefaultRefProps {
   close(): void
   open(): void
 }
@@ -22,13 +22,13 @@ interface IProps {
   children: ReactNode
   buttonColor?: string
   buttonText?: string
-  width: 'sm:max-w-3xl' | 'sm:max-w-lg'
+  onClick(): void
 }
 
-const ComponentModalDefault: ForwardRefRenderFunction<IRefProps, IProps> = (
-  { buttonColor, buttonText, children, message, title, width },
-  ref,
-) => {
+const ComponentModalDefaultWithRef: ForwardRefRenderFunction<
+  IComponentModalDefaultRefProps,
+  IProps
+> = ({ buttonColor, buttonText, children, title, onClick }, ref) => {
   const cancelButtonRef = useRef<HTMLButtonElement>(null)
 
   const [isOpened, setIsOpened] = useState<boolean>(false)
@@ -78,12 +78,12 @@ const ComponentModalDefault: ForwardRefRenderFunction<IRefProps, IProps> = (
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel
-                className={`relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full ${width}`}
+                className={`relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-3xl `}
               >
                 <div className="justify-center bg-primary px-4 py-3  sm:flex sm:flex-row-reverse sm:px-6">
                   <Dialog.Title
                     as="h3"
-                    className="justify-center text-xl font-semibold leading-6 text-white"
+                    className="justify-center text-xl font-semibold leading-6 text-zinc-600"
                   >
                     {title}
                   </Dialog.Title>
@@ -110,21 +110,12 @@ const ComponentModalDefault: ForwardRefRenderFunction<IRefProps, IProps> = (
 
                     <button
                       className={`inline-flex w-full justify-center rounded-md ${buttonColor}  px-3 py-2 text-sm font-semibold text-white shadow-sm hover:${buttonColor} sm:ml-3 sm:w-auto`}
-                      onClick={() => setIsOpened(false)}
+                      onClick={onClick}
                       type="button"
                     >
                       {buttonText}
                     </button>
                   </div>
-
-                  <button
-                    className="mt-3  w-full rounded-md bg-primary px-8 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-700 sm:mt-0 sm:w-auto"
-                    onClick={() => setIsOpened(false)}
-                    ref={cancelButtonRef}
-                    type="button"
-                  >
-                    Editar
-                  </button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -135,5 +126,5 @@ const ComponentModalDefault: ForwardRefRenderFunction<IRefProps, IProps> = (
   )
 }
 
-export type { IRefProps }
-export default forwardRef(ComponentModalDefault)
+const ComponentModalDefault = forwardRef(ComponentModalDefaultWithRef)
+export default ComponentModalDefault

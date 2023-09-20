@@ -27,7 +27,6 @@ export default async function loadAccessList({ onSuccess }: IProps) {
     throw new Error('Erro ao carregar os acessos')
   }
   const data: HttpResponse = await res.json()
-  console.log('data', data)
   const dataParsed: AccessList[] = data.list.map((item) => ({
     date_time: item.date_time,
     id: item.id,

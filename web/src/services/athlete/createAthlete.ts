@@ -1,10 +1,9 @@
 import { FormDataProps } from '@/app/atletas/form'
-import { OptionTypeBase } from '@/components/Input/Select'
 
 interface HttpResponseRequest {
   name: string
   gender: string
-  is_active: OptionTypeBase<boolean>
+  is_active: boolean
 }
 
 interface IProps {
