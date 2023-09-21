@@ -2,11 +2,7 @@ import { AthleteList } from '@/app/atletas/page'
 import { Check, PencilLine, X } from '@phosphor-icons/react'
 import Link from 'next/link'
 import ComponentIsVisible from '../utils/IsVisible'
-
-enum IGender {
-  'Masculino' = 'M',
-  'Feminino' = 'F',
-}
+import EGender from '@/enums/Gender'
 
 interface Props {
   athlete: AthleteList
@@ -29,10 +25,10 @@ export default function List({
     >
       <p>{athlete.id}</p>
       <p>{athlete.name}</p>
-      <ComponentIsVisible when={athlete.gender === IGender.Masculino}>
+      <ComponentIsVisible when={athlete.gender === EGender.Masculino}>
         <p>Masculino</p>
       </ComponentIsVisible>
-      <ComponentIsVisible when={athlete.gender === IGender.Feminino}>
+      <ComponentIsVisible when={athlete.gender === EGender.Feminino}>
         <p>Feminino</p>
       </ComponentIsVisible>
       <ComponentIsVisible when={athlete.is_active === true}>

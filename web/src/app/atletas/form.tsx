@@ -42,7 +42,6 @@ interface Errors {
 const validation = Yup.object().shape({
   name: Yup.string().required('Campo nome é obrigatório'),
   gender: Yup.string().required('Campo gênero é obrigatório'),
-  is_active: Yup.boolean().required('Campo status é obrigatório'),
 })
 
 const AthleteForm: React.ForwardRefRenderFunction<FormRefProps, Props> = (
@@ -149,12 +148,9 @@ const AthleteForm: React.ForwardRefRenderFunction<FormRefProps, Props> = (
       if (!inputGenderRef.current) {
         throw new Error('inputGenderRef não encontrado')
       }
-      if (!inputIsActiveRef.current) {
-        throw new Error('inputIsActiveRef não encontrado')
-      }
       inputNameRef.current.setValue(initialData.name)
       inputGenderRef.current.setValue(initialData.gender)
-      inputIsActiveRef.current.setValue(initialData.is_active)
+      inputIsActiveRef.current?.setValue(initialData.is_active)
     }
   }, [initialData])
 
