@@ -1,6 +1,6 @@
 'use client'
 
-import { Eye, EyeSlash, Icon } from '@phosphor-icons/react'
+import { Icon } from '@phosphor-icons/react'
 import {
   ChangeEvent,
   InputHTMLAttributes,
@@ -19,7 +19,6 @@ export interface InputBaseRefProps {
 export interface InputBaseProps extends InputHTMLAttributes<HTMLInputElement> {
   isLoading?: boolean
   label?: string
-  isPassword?: boolean
   icon?: Icon
   placeholder?: string
 }
@@ -30,7 +29,6 @@ const InputBaseWithRef: React.ForwardRefRenderFunction<
 > = (
   {
     label,
-    isPassword = false,
     icon: InputIcon,
     type = 'text',
     disabled,
@@ -41,7 +39,7 @@ const InputBaseWithRef: React.ForwardRefRenderFunction<
   ref,
 ) => {
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const [inputType, setInputType] = useState<string>(type)
+  const [inputType] = useState<string>(type)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -52,15 +50,6 @@ const InputBaseWithRef: React.ForwardRefRenderFunction<
     if (onChange) {
       onChange(event)
     }
-  }
-
-  const handleToggleInputType = () => {
-    setInputType((currentType) => {
-      if (currentType === 'password') {
-        return 'text'
-      }
-      return 'password'
-    })
   }
 
   useImperativeHandle(
@@ -96,20 +85,6 @@ const InputBaseWithRef: React.ForwardRefRenderFunction<
           onChange={handleInputChange}
           placeholder={placeholder}
         />
-
-        {isPassword && (
-          <button
-            onClick={handleToggleInputType}
-            className="text-blue-500"
-            type="button"
-          >
-            {inputType === 'password' ? (
-              <Eye size={22} />
-            ) : (
-              <EyeSlash size={22} />
-            )}
-          </button>
-        )}
       </div>
       <div>
         {!!errorMessage && <p className="text-red-500">{errorMessage}</p>}
